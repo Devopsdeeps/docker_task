@@ -1,0 +1,109 @@
+# cmd to Install Docker on EC2 Instance 
+apt update -y
+apt install docker -y 
+apt install docker-compose -y 
+
+#Cmd to check the Docker Version
+root@ip-172-31-93-17:~# docker --version
+Docker version 20.10.21, build 20.10.21-0ubuntu1~22.04.3
+
+# Cmd to check the Docker container
+root@ip-172-31-93-17:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS    PORTS     NAMES
+ebde2a7fb035   httpd     "httpd-foreground"   4 minutes ago   Created             gifted_euclid
+
+#Cmd to renmae the container name 
+root@ip-172-31-93-17:~# docker rename gifted_euclid app
+root@ip-172-31-93-17:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS    PORTS     NAMES
+ebde2a7fb035   httpd     "httpd-foreground"   5 minutes ago   Created             app
+
+# Cmd to create the images 
+root@ip-172-31-93-17:~# docker create httpd
+Unable to find image 'httpd:latest' locally
+latest: Pulling from library/httpd
+5b5fe70539cd: Pull complete 
+1d40567696ba: Pull complete 
+d6cb3e372b06: Pull complete 
+fbc80fe62958: Pull complete 
+3da840f9e96e: Pull complete 
+Digest: sha256:f499227681dff576d6ae8c49550c57f11970b358ee720bb8557b9fa7daf3a06d
+Status: Downloaded newer image for httpd:latest
+ebde2a7fb035f58d1a6772c07bd544cf12a34ca3a19ba0cb0b732144967f4dda
+
+# Cmd to pull the docker images
+root@ip-172-31-93-17:~# docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+5b5fe70539cd: Already exists 
+441a1b465367: Pull complete 
+3b9543f2b500: Pull complete 
+ca89ed5461a9: Pull complete 
+b0e1283145af: Pull complete 
+4b98867cde79: Pull complete 
+4a85ce26214d: Pull complete 
+Digest: sha256:593dac25b7733ffb7afe1a72649a43e574778bf025ad60514ef40f6b5d606247
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+
+#Cmd to check the Docker Images
+root@ip-172-31-93-17:~# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+httpd        latest    ad303d7f80f9   3 days ago   168MBE
+
+# Cmd to run the container 
+root@ip-172-31-93-17:~# docker run -d httpd
+9599b99e0ef0d45a4c232f62fec0a18d2b8f95ae431141dbe7ae1b7d0c94d742
+root@ip-172-31-93-17:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS         PORTS     NAMES
+9599b99e0ef0   httpd     "httpd-foreground"   8 seconds ago   Up 6 seconds   80/tcp    recursing_hofstadter
+ebde2a7fb035   httpd     "httpd-foreground"   9 minutes ago   Created                  app
+
+# cmd to stop the container 
+root@ip-172-31-93-17:~# docker stop ebde
+ebde
+root@ip-172-31-93-17:~# docker ps 
+CONTAINER ID   IMAGE     COMMAND              CREATED         STATUS         PORTS     NAMES
+9599b99e0ef0   httpd     "httpd-foreground"   9 minutes ago   Up 9 minutes   80/tcp    recursing_hofstadter
+
+#cmd to remove the container
+root@ip-172-31-93-17:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND              CREATED          STATUS                     PORTS     NAMES
+9599b99e0ef0   httpd     "httpd-foreground"   17 minutes ago   Exited (0) 2 minutes ago             recursing_hofstadter
+ebde2a7fb035   httpd     "httpd-foreground"   26 minutes ago   Exited (0) 2 minutes ago             app
+root@ip-172-31-93-17:~# docker rmi 9599
+
+# cmd to remove the images
+root@ip-172-31-93-17:~# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+httpd        latest    ad303d7f80f9   3 days ago   168MB
+root@ip-172-31-93-17:~# docker rmi httpd
+Untagged: httpd:latest
+Untagged: httpd@sha256:f499227681dff576d6ae8c49550c57f11970b358ee720bb8557b9fa7daf3a06d
+Deleted: sha256:ad303d7f80f968a856f91e6216f8af2376d8b173f3d1d07ea11e2f810430c1af
+Deleted: sha256:1f46fbfbddbded628a11bb9956b2ad6ffb7f1057a26a8db8cdab70aafa4e9711
+Deleted: sha256:85584c93b7bc91601fd8721abf8c3be01bad5f59d7dcc6e1cb6c6d0f255c485f
+Deleted: sha256:2d165a240b04629fb8b84078dc3a0dfcc80ac73ec697b881a2e54a1078e24c35
+Deleted: sha256:e68a90e9f5b4315834c814466c5f26b24606d24fdc55d7e406e844c5bc3efe03
+Deleted: sha256:ac4d164fef90ff58466b67e23deb79a47b5abd30af9ebf1735b57da6e4af1323
+
+# cmd to start the container
+root@ip-172-31-93-17:~# docker start ebde
+ebde
+root@ip-172-31-93-17:~# docker ps -a
+CONTAINER ID   IMAGE     COMMAND              CREATED          STATUS          PORTS     NAMES
+9599b99e0ef0   httpd     "httpd-foreground"   12 minutes ago   Up 12 minutes   80/tcp    recursing_hofstadter
+ebde2a7fb035   httpd     "httpd-foreground"   21 minutes ago   Up 9 seconds    80/tcp    app
+root@ip-172-31-93-17:~# 
+
+#Cmd to check the Docker Volumes
+root@ip-172-31-93-17:~# docker volume ls
+DRIVER    VOLUME NAME
+
+#Cmd to check the Docker Network 
+root@ip-172-31-93-17:~# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+4214aee29640   bridge    bridge    local
+dd9f7c471c4e   host      host      local
+267affd22532   none      null      local
+root@ip-172-31-93-17:~# 
